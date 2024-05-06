@@ -7,10 +7,11 @@ from django.contrib.auth.decorators import login_required
 
 from .models import User, Comments, Winners, Listing, Offers
 
-LOGIN_URL = 'login'
+LOGIN_URL = "login"
+
 
 def index(request):
-    active_listing = Listing.objects.filter(active=True).order_by('-created_at')
+    active_listing = Listing.objects.filter(active=True).order_by("-created_at")
     user = request.user
     choices = []
     message = "Welcome to the #1 site of dnd's auctions"
@@ -18,17 +19,26 @@ def index(request):
         choices.append(i[1])
     if user.is_authenticated:
         watched_listing = user.listingWatchlist.all()
-        return render(request, "auctions/index.html", {
-        "listing": active_listing,
-        "watchlist": watched_listing,
-        "choices": choices,
-        "message": message
-    })
-    return render(request, "auctions/index.html", {
-        "listing": active_listing,
-        "choices": choices,
-    })
-    
+        return render(
+            request,
+            "auctions/index.html",
+            {
+                "listing": active_listing,
+                "watchlist": watched_listing,
+                "choices": choices,
+                "message": message,
+            },
+        )
+    return render(
+        request,
+        "auctions/index.html",
+        {
+            "listing": active_listing,
+            "choices": choices,
+        },
+    )
+
+
 def login_view(request):
     if request.method == "POST":
 
@@ -42,15 +52,22 @@ def login_view(request):
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:
-            return render(request, "auctions/login.html", {
-                "message": "Invalid username and/or password."
-            })
+            return render(
+                request,
+                "auctions/login.html",
+                {"message": "Invalid username and/or password."},
+            )
     else:
-        return render(request, "auctions/login.html")
+        choices = []
+        for i in Listing.CATEGORY_CHOICES:
+            choices.append(i[1])
+        return render(request, "auctions/login.html", {"choices": choices})
+
 
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
+
 
 def register(request):
     if request.method == "POST":
@@ -62,38 +79,54 @@ def register(request):
         confirmation = request.POST["confirmation"]
 
         if not username:
-            return render(request, "auctions/register.html", {
-                "message": "Username must be provided."
-            })
+            return render(
+                request,
+                "auctions/register.html",
+                {"message": "Username must be provided."},
+            )
         if not email:
-            return render(request, "auctions/register.html", {
-                "message": "Email must be provied."
-            })
+            return render(
+                request, "auctions/register.html", {"message": "Email must be provied."}
+            )
         if not password:
-            return render(request, "auctions/register.html", {
-                "message": "Passwords must be provided."
-            })
+            return render(
+                request,
+                "auctions/register.html",
+                {"message": "Passwords must be provided."},
+            )
         if password != confirmation:
-            return render(request, "auctions/register.html", {
-                "message": "Passwords must match."
-            })
+            return render(
+                request, "auctions/register.html", {"message": "Passwords must match."}
+            )
 
         # Attempt to create new user
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
         except IntegrityError:
-            return render(request, "auctions/register.html", {
-                "message": "Username already taken."
-            })
+            return render(
+                request,
+                "auctions/register.html",
+                {"message": "Username already taken."},
+            )
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
-        return render(request, "auctions/register.html")
+        choices = []
+        for i in Listing.CATEGORY_CHOICES:
+            choices.append(i[1])
+        return render(
+            request,
+            "auctions/register.html",
+            {
+                "choices": choices,
+            },
+        )
 
-@login_required  
+
+@login_required
 def create_listing(request):
-    if request.method == "POST": 
+    if request.method == "POST":
         user = request.user
         title = request.POST["title"]
         description = request.POST["description"]
@@ -104,36 +137,66 @@ def create_listing(request):
         for i in Listing.CATEGORY_CHOICES:
             choices.append(i[1])
         if not title:
-            return render(request, "auctions/create.html", {
-                "choices" : choices,
-                "message": "Title must be provided."
-            })
+            if user.is_authenticated:
+                watched_listing = user.listingWatchlist.all()
+            return render(
+                request,
+                "auctions/create.html",
+                {
+                    "choices": choices,
+                    "message": "Title must be provided.",
+                    "watchlist": watched_listing,
+                },
+            )
         if not description:
-            return render(request, "auctions/create.html", {
-                "choices" : choices,
-                "message": "Description must be provided."
-            })
+            if user.is_authenticated:
+                watched_listing = user.listingWatchlist.all()
+            return render(
+                request,
+                "auctions/create.html",
+                {
+                    "choices": choices,
+                    "message": "Description must be provided.",
+                    "watchlist": watched_listing,
+                },
+            )
         if not price:
-            return render(request, "auctions/create.html", {
-                "choices" : choices,
-                "message": "Price must be provided."
-            })
+            if user.is_authenticated:
+                watched_listing = user.listingWatchlist.all()
+                return render(
+                    request,
+                    "auctions/create.html",
+                    {
+                        "choices": choices,
+                        "message": "Price must be provided.",
+                        "watchlist": watched_listing,
+                    },
+                )
         offer = Offers(offerer=user, offer_amount=price)
         offer.save()
-        listing = Listing(lister=user, title=title, description=description,imageLink=img, categories=category, price=offer)
+        listing = Listing(
+            lister=user,
+            title=title,
+            description=description,
+            imageLink=img,
+            categories=category,
+            price=offer,
+        )
         listing.save()
         choices = []
         watched_listing = request.user.listingWatchlist.all()
-        return HttpResponseRedirect(reverse("listing", kwargs={'id':listing.id}))
+        return HttpResponseRedirect(reverse("listing", kwargs={"id": listing.id}))
     else:
         choices = []
         watched_listing = request.user.listingWatchlist.all()
         for i in Listing.CATEGORY_CHOICES:
             choices.append(i[1])
-        return render(request, "auctions/create.html", {
-            "choices" : choices,
-            "watchlist": watched_listing
-        })
+        return render(
+            request,
+            "auctions/create.html",
+            {"choices": choices, "watchlist": watched_listing},
+        )
+
 
 def listing(request, id):
     try:
@@ -153,22 +216,27 @@ def listing(request, id):
     Winner = None
     isWinner = False
     if listing.active is False:
-        Winner = Winners.objects.get(item = listing)
+        Winner = Winners.objects.get(item=listing)
         if Winner.winned_by == request.user:
             isWinner = True
     choices = []
     for i in Listing.CATEGORY_CHOICES:
         choices.append(i[1])
-    return render(request, "auctions/list.html", {
-        "listing": listing,
-        "isInWatchList":  isInWatchList,
-        "comments" : comments,
-        "winner" : Winner,
-        "isLister" : isLister,
-        "isWinner" : isWinner,
-        "watchlist": watched_listing,
-        "choices": choices
-    })
+    return render(
+        request,
+        "auctions/list.html",
+        {
+            "listing": listing,
+            "isInWatchList": isInWatchList,
+            "comments": comments,
+            "winner": Winner,
+            "isLister": isLister,
+            "isWinner": isWinner,
+            "watchlist": watched_listing,
+            "choices": choices,
+        },
+    )
+
 
 @login_required
 def create_offer(request, id):
@@ -183,57 +251,70 @@ def create_offer(request, id):
     for i in Listing.CATEGORY_CHOICES:
         choices.append(i[1])
     if listing.active is False:
-        Winner = Winners.objects.get(item = listing)
+        Winner = Winners.objects.get(item=listing)
         if Winner.winned_by == request.user:
             isWinner = True
     offerer = request.user
     offer = request.POST["bid"]
     if not offer:
-        return render(request, "auctions/list.html", {
+        return render(
+            request,
+            "auctions/list.html",
+            {
                 "message": "Offer must be provided.",
                 "listing": listing,
-                "isInWatchList":  isInWatchList,
+                "isInWatchList": isInWatchList,
                 "watchlist": watched_listing,
-                "comments" : comments,
-                "winner" : Winner,
-                "isLister" : isLister,
-                "isWinner" : isWinner,
-                "choices": choices
-            })
+                "comments": comments,
+                "winner": Winner,
+                "isLister": isLister,
+                "isWinner": isWinner,
+                "choices": choices,
+            },
+        )
     if int(offer) > listing.price.offer_amount:
         updatedOffer = Offers(offerer=offerer, offer_amount=int(offer))
         updatedOffer.save()
         listing.price = updatedOffer
         listing.save()
-        return render(request, "auctions/list.html", {
+        return render(
+            request,
+            "auctions/list.html",
+            {
                 "update": True,
                 "message": "Offer succesfully raised.",
                 "listing": listing,
-                "isInWatchList":  isInWatchList,
+                "isInWatchList": isInWatchList,
                 "watchlist": watched_listing,
-                "comments" : comments,
-                "winner" : Winner,
-                "isLister" : isLister,
-                "isWinner" : isWinner,
-                "choices": choices
-            })
+                "comments": comments,
+                "winner": Winner,
+                "isLister": isLister,
+                "isWinner": isWinner,
+                "choices": choices,
+            },
+        )
     else:
         choices = []
         for i in Listing.CATEGORY_CHOICES:
             choices.append(i[1])
-        return render(request, "auctions/list.html", {
+        return render(
+            request,
+            "auctions/list.html",
+            {
                 "update": False,
                 "message": "Offer has to be greater than current price.",
                 "listing": listing,
-                "isInWatchList":  isInWatchList,
+                "isInWatchList": isInWatchList,
                 "watchlist": watched_listing,
-                "comments" : comments,
-                "winner" : Winner,
-                "isLister" : isLister,
-                "isWinner" : isWinner,
-                "choices": choices
-            })
-    
+                "comments": comments,
+                "winner": Winner,
+                "isLister": isLister,
+                "isWinner": isWinner,
+                "choices": choices,
+            },
+        )
+
+
 @login_required
 def make_comment(request, id):
     user = request.user
@@ -241,29 +322,34 @@ def make_comment(request, id):
     comment = request.POST.get("comment")
     isInWatchList = request.user in listing.watchlist.all()
     watched_listing = request.user.listingWatchlist.all()
-    comments = Comments.objects.filter(product=listing).order_by('-commented_at')
+    comments = Comments.objects.filter(product=listing).order_by("-commented_at")
     isLister = request.user == listing.lister
     Winner = None
     isWinner = False
     if listing.active is False:
-        Winner = Winners.objects.get(item = listing)
+        Winner = Winners.objects.get(item=listing)
         if Winner.winned_by == request.user:
             isWinner = True
     if not comment:
-        return render(request, "auctions/list.html", {
+        return render(
+            request,
+            "auctions/list.html",
+            {
                 "update": False,
                 "message": "Comment must be provided.",
                 "listing": listing,
-                "isInWatchList":  isInWatchList,
+                "isInWatchList": isInWatchList,
                 "watchlist": watched_listing,
-                "comments" : comments,
-                "winner" : Winner,
-                "isLister" : isLister,
-                "isWinner" : isWinner
-            })
+                "comments": comments,
+                "winner": Winner,
+                "isLister": isLister,
+                "isWinner": isWinner,
+            },
+        )
     newComment = Comments(user=user, product=listing, comment=comment)
     newComment.save()
-    return HttpResponseRedirect(reverse("listing", kwargs={'id':listing.id}))
+    return HttpResponseRedirect(reverse("listing", kwargs={"id": listing.id}))
+
 
 @login_required
 def close_auction(request, id):
@@ -275,7 +361,8 @@ def close_auction(request, id):
         iswinner = listing.price.offerer
         winner = Winners(item=listing, winned_by=iswinner)
         winner.save()
-        return HttpResponseRedirect(reverse("listing", kwargs={'id':listing.id}))
+        return HttpResponseRedirect(reverse("listing", kwargs={"id": listing.id}))
+
 
 @login_required
 def addWatchlist(request, id):
@@ -284,8 +371,9 @@ def addWatchlist(request, id):
         user = request.user
         listing = Listing.objects.get(pk=id)
         listing.watchlist.add(user)
-        return HttpResponseRedirect(reverse("listing", kwargs={'id':listing.id}))
-    
+        return HttpResponseRedirect(reverse("listing", kwargs={"id": listing.id}))
+
+
 @login_required
 def removeWatchlist(request, id):
     remove = request.POST["remove"]
@@ -293,8 +381,9 @@ def removeWatchlist(request, id):
         user = request.user
         listing = Listing.objects.get(pk=id)
         listing.watchlist.remove(user)
-        return HttpResponseRedirect(reverse("listing", kwargs={'id':listing.id}))
-    
+        return HttpResponseRedirect(reverse("listing", kwargs={"id": listing.id}))
+
+
 @login_required
 def removeWatchlist_from_Watchlist(request):
     remove = request.POST["remove"]
@@ -305,6 +394,7 @@ def removeWatchlist_from_Watchlist(request):
         listing.watchlist.remove(user)
         return HttpResponseRedirect(reverse("show_watchlist"))
 
+
 @login_required
 def show_watchlist(request):
     user = request.user
@@ -313,45 +403,57 @@ def show_watchlist(request):
     choices = []
     for i in Listing.CATEGORY_CHOICES:
         choices.append(i[1])
-    return render(request, "auctions/watchlist.html", {
-        "listing" : listing,
-        "watchlist": watched_listing,
-        "choices" : choices
-    })
+    return render(
+        request,
+        "auctions/watchlist.html",
+        {"listing": listing, "watchlist": watched_listing, "choices": choices},
+    )
+
 
 def show_categories(request):
     category = request.GET.get("category")
-    active_listing = Listing.objects.filter(active=True, categories=category).order_by('-created_at')
+    active_listing = Listing.objects.filter(active=True, categories=category).order_by(
+        "-created_at"
+    )
     user = request.user
     choices = []
     for i in Listing.CATEGORY_CHOICES:
         choices.append(i[1])
     if user.is_authenticated:
         watched_listing = user.listingWatchlist.all()
-        return render(request, "auctions/index.html", {
-        "listing": active_listing,
-        "watchlist": watched_listing,
-        "choices": choices
-    })
-    return render(request, "auctions/index.html", {
-        "listing": active_listing,
-        "choices": choices
-    })
+        return render(
+            request,
+            "auctions/index.html",
+            {
+                "listing": active_listing,
+                "watchlist": watched_listing,
+                "choices": choices,
+            },
+        )
+    return render(
+        request, "auctions/index.html", {"listing": active_listing, "choices": choices}
+    )
+
 
 def my_listing(request):
     user = request.user
-    active_listing = Listing.objects.filter(active=True, lister=user).order_by('-created_at')
+    active_listing = Listing.objects.filter(active=True, lister=user).order_by(
+        "-created_at"
+    )
     choices = []
     for i in Listing.CATEGORY_CHOICES:
         choices.append(i[1])
     if user.is_authenticated:
         watched_listing = user.listingWatchlist.all()
-        return render(request, "auctions/index.html", {
-        "listing": active_listing,
-        "watchlist": watched_listing,
-        "choices": choices
-    })
-    return render(request, "auctions/index.html", {
-        "listing": active_listing,
-        "choices": choices
-    })
+        return render(
+            request,
+            "auctions/index.html",
+            {
+                "listing": active_listing,
+                "watchlist": watched_listing,
+                "choices": choices,
+            },
+        )
+    return render(
+        request, "auctions/index.html", {"listing": active_listing, "choices": choices}
+    )
