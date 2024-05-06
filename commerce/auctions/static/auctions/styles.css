@@ -1,1 +1,214 @@
+@media (min-width: 768px) {
+  body {
+    background-color: #9B3922 !important;
+    color: #FEFBF6 !important;
+    font-size: 1em !important; }
+    body a {
+      text-decoration: none;
+      color: #FEFBF6; }
+    body a:hover {
+      color: grey;
+      text-decoration: none; }
+    body img {
+      width: 50%;
+      border: 1px solid #481E14;
+      margin-bottom: 1%; }
+    body textarea {
+      width: 90vw; }
 
+  .submit {
+    border-radius: 4px;
+    background-color: #481E14;
+    color: #FEFBF6;
+    width: vw;
+    height: 6vh;
+    white-space: normal;
+    margin-left: 23.2vw; }
+
+  .submit-list {
+    border-radius: 4px;
+    background-color: #481E14;
+    color: #FEFBF6;
+    width: vw;
+    height: 6vh;
+    white-space: normal;
+    margin-top: 1%;
+    margin-bottom: 1%; }
+
+  .submit-close {
+    border-radius: 4px;
+    background-color: #481E14;
+    color: #FEFBF6;
+    width: vw;
+    height: 6vh;
+    white-space: normal;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    color: yellow;
+    background-color: #F2613F; }
+
+  .watchlisted {
+    width: 12vw;
+    margin-top: 1%;
+    margin-bottom: 1%; }
+
+  .content {
+    margin: 1%; }
+
+  .not-found {
+    width: 50%;
+    height: fit-content; }
+    .not-found img {
+      width: 100%;
+      background-color: #ffffff; }
+
+  .navbar-brand {
+    width: 5%;
+    margin-right: 10%; }
+    .navbar-brand img {
+      border: none;
+      width: 100%; }
+
+  .img-thumbnail {
+    border-color: #481E14 !important;
+    background-color: #481E14 !important; }
+
+  .form {
+    display: flex;
+    justify-content: space-between;
+    width: 30vw;
+    margin-bottom: 1%; }
+    .form input {
+      width: 60.5%; }
+    .form select {
+      width: 60.5%; }
+
+  .warning {
+    color: yellow; }
+
+  .commented {
+    border: 1px solid white !important;
+    margin-bottom: 1%;
+    padding: 1%; }
+
+  .nav-item {
+    margin-left: 5px; }
+
+  .username {
+    text-align: end; }
+
+  #no-comment {
+    text-align: center; }
+
+  #watchlistcount {
+    background-color: gray;
+    display: inline;
+    border-radius: 4px;
+    padding: 2px; } }
+@media (max-width: 767px) {
+  body {
+    background-color: #9B3922 !important;
+    color: #FEFBF6 !important;
+    font-size: 1em !important;
+    height: 100vh;
+    width: 100vw; }
+    body a {
+      text-decoration: none;
+      color: #FEFBF6; }
+    body img {
+      width: 100%;
+      border: 1px solid #481E14;
+      margin-bottom: 1%; }
+
+  .submit {
+    border-radius: 4px;
+    background-color: #481E14;
+    color: #FEFBF6;
+    width: vw;
+    height: 6vh;
+    white-space: normal;
+    margin-left: 78%; }
+
+  .submit-list {
+    border-radius: 4px;
+    background-color: #481E14;
+    color: #FEFBF6;
+    width: vw;
+    height: 6vh;
+    white-space: normal;
+    width: 20%;
+    margin-top: 1%;
+    margin-bottom: 1%; }
+
+  .submit-close {
+    border-radius: 4px;
+    background-color: #481E14;
+    color: #FEFBF6;
+    width: vw;
+    height: 6vh;
+    white-space: normal;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    color: yellow;
+    background-color: #F2613F; }
+
+  .watchlisted {
+    width: 30%;
+    margin-top: 1%;
+    margin-bottom: 1%; }
+
+  .content {
+    margin: 1%; }
+
+  .not-found {
+    width: 100%;
+    height: fit-content; }
+    .not-found img {
+      width: 100%;
+      background-color: #ffffff; }
+
+  .navbar-brand {
+    width: 15%;
+    margin-right: 10%; }
+    .navbar-brand img {
+      border: none;
+      width: 100%; }
+
+  .img-thumbnail {
+    border-color: #481E14 !important;
+    background-color: #481E14 !important; }
+
+  .form {
+    display: flex;
+    justify-content: space-between;
+    width: 95vw;
+    margin-bottom: 1%; }
+    .form input {
+      width: 60.5%; }
+    .form select {
+      width: 60.5%; }
+
+  .warning {
+    color: yellow; }
+
+  .commented {
+    border: 1px solid white !important;
+    margin-bottom: 1%;
+    padding: 1%; }
+
+  .nav-item {
+    margin-left: 5px; }
+
+  .username {
+    text-align: end; }
+
+  #no-comment {
+    text-align: center; }
+
+  #watchlistcount {
+    background-color: gray;
+    display: inline;
+    border-radius: 4px;
+    padding: 2px; } }
+
+/*# sourceMappingURL=styles.css.map */

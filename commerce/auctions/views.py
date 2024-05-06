@@ -13,6 +13,7 @@ def index(request):
     active_listing = Listing.objects.filter(active=True).order_by('-created_at')
     user = request.user
     choices = []
+    message = "Welcome to the #1 site of dnd's auctions"
     for i in Listing.CATEGORY_CHOICES:
         choices.append(i[1])
     if user.is_authenticated:
@@ -20,10 +21,12 @@ def index(request):
         return render(request, "auctions/index.html", {
         "listing": active_listing,
         "watchlist": watched_listing,
-        "choices": choices
+        "choices": choices,
+        "message": message
     })
     return render(request, "auctions/index.html", {
         "listing": active_listing,
+        "choices": choices,
     })
     
 def login_view(request):
@@ -176,6 +179,9 @@ def create_offer(request, id):
     isLister = request.user == listing.lister
     Winner = None
     isWinner = False
+    choices = []
+    for i in Listing.CATEGORY_CHOICES:
+        choices.append(i[1])
     if listing.active is False:
         Winner = Winners.objects.get(item = listing)
         if Winner.winned_by == request.user:
@@ -191,7 +197,8 @@ def create_offer(request, id):
                 "comments" : comments,
                 "winner" : Winner,
                 "isLister" : isLister,
-                "isWinner" : isWinner
+                "isWinner" : isWinner,
+                "choices": choices
             })
     if int(offer) > listing.price.offer_amount:
         updatedOffer = Offers(offerer=offerer, offer_amount=int(offer))
@@ -207,9 +214,13 @@ def create_offer(request, id):
                 "comments" : comments,
                 "winner" : Winner,
                 "isLister" : isLister,
-                "isWinner" : isWinner
+                "isWinner" : isWinner,
+                "choices": choices
             })
     else:
+        choices = []
+        for i in Listing.CATEGORY_CHOICES:
+            choices.append(i[1])
         return render(request, "auctions/list.html", {
                 "update": False,
                 "message": "Offer has to be greater than current price.",
@@ -219,7 +230,8 @@ def create_offer(request, id):
                 "comments" : comments,
                 "winner" : Winner,
                 "isLister" : isLister,
-                "isWinner" : isWinner
+                "isWinner" : isWinner,
+                "choices": choices
             })
     
 @login_required

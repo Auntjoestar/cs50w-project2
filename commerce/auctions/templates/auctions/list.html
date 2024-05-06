@@ -2,14 +2,17 @@
 {% load static %}
 
 {% block body %}
+<div class="content">
 {% if message %}
     {% if update %}
-    <div class="alert alert-success"> 
+    <div class="alert alert-success alert-dismissible"> 
         {{ message }}
+    <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
     </div>
     {% else %}
-    <div class="alert alert-danger"> 
+    <div class="alert alert-danger alert-dismissible"> 
         {{ message }}
+    <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
     </div>
     {% endif %}
 {% endif %}
@@ -22,11 +25,12 @@
 {% endif %}
 <h1> {{ listing.title }} </h1>
 {% if user.is_authenticated %}
+{% if listing.lister.id != user.id %}
 {% if isInWatchList  %}
 <form action="{% url "removeWatchlist" id=listing.id %}" method="POST">
     {% csrf_token %}
 <div id="watchlist">
-    <input name="remove" type="submit" value="watchlisted"><br>
+    <input name="remove" type="submit" class="submit-list watchlisted" value="watchlisted"><br>
 </div>
 </form>
 {% else %}
@@ -34,21 +38,22 @@
 <form action="{% url "addWatchlist" id=listing.id %}" method="POST">
     {% csrf_token %}
 <div id="watchlist">
-    <input name="add" type="submit" value="watchlist"><br>
+    <input name="add" type="submit" class="submit-list watchlisted" value="watchlist"><br>
 </div>
 </form>
 {% endif %}
 {% endif %}
+{% endif %}
 {% else %}
 <a href="{% url "login" %}">
-    <input type="submit" value="watchlist"><br>
+    <input type="submit" value="watchlist" class="submit-list watchlisted"><br>
 </a>
 {% endif %}
 {% if listing.lister.id == user.id %} 
 {% if listing.active %}
 <form action="{% url "close_auction" id=listing.id %}" method="POST">
     {% csrf_token %}
-    <input name="closed" type="submit" value="close"><br>
+    <input class="submit-close" name="closed" type="submit" value="close"><br>
 </form>
 {% endif %}
 {% endif %}
@@ -63,24 +68,24 @@
 {% if user.is_authenticated %}
 {% if listing.lister.id == user.id %}
 <div class="isOwner">
-    <h4>You're the owner of this listing</h4>
+    <h4 class="warning">You're the owner of this listing</h4>
 </div>
 {% elif listing.price.offerer_id == user.id%}
 <div class="isWinning">
-    <h4>You currently have the highest bid</h4>
+    <h4 class="warning">You currently have the highest bid</h4>
 </div>
 {% else %}
 <form action="{% url "create_offer" id=listing.id%}" method="POST">
     {% csrf_token %}
     <input type="number" placeholder="Offer" name="bid"> <br>
-    <input type="submit" value="Offer">
+    <input class="submit-list" type="submit" value="Offer">
     </form>
     <hr>
 {% endif %}
 {% else %}
 <input type="number" placeholder="Offer" name="bid"> <br>
 <a href="{% url "login" %}">
-<input type="submit" value="Offer">
+<input class="submit-list"  type="submit" value="Offer">
 </a>
 {% endif %}
 {% endif %}
@@ -90,7 +95,6 @@
 {% if listing.categories %}
 <label for="category"><strong>Category: </strong></label>
 <span name="category">{{ listing.categories }}</span>
-<hr>
 {% endif %}
 <hr>
 <h2>Comments</h2>
@@ -99,15 +103,21 @@
 <label for="comment">Make a comment: </label> <br>
 <form action="{% url "make_comment" id=listing.id%}" method="POST">
     {% csrf_token %}
-<textarea name="comment" type="text" maxlength="500" rows="6" cols="100" placeholder="Write your comment here"></textarea> <br>
-<button type="submit">Upload</button>
+<textarea name="comment" type="text" maxlength="500" rows="6" placeholder="Write your comment here"></textarea> <br>
+<button class="submit-list" type="submit">Upload</button>
 </form>
 {% endif %}
 {% endif %}
+{% if comments %}
 {% for comment in comments %}
-<div class="comment"> 
+<div class="commented"> 
     <h3>{{ comment.user.username }}</h3>
+    <hr>
     <p>{{ comment.comment}}</p>
 </div>
 {% endfor %}
+{% else %}
+<p id="no-comment"><strong>There are currently no comments... :(</strong></p>
+{% endif %}
+</div>
 {% endblock %}

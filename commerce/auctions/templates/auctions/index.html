@@ -2,24 +2,38 @@
 {% load static %}
 
 {% block body %}
+<div class="content">
 <h2>Active Listings</h2>
 <hr>
+{% if message %}
+<div class="alert alert-primary alert-dismissible class">
+  {{ message}}
+  <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
+</div>
+{% endif %}
+</div>
 {% if not listing %}
+<div class="content">
 <p>It seems that there are currently none </p>
+</div>
 {% endif %}
 {% for list in listing %}
+<div class="content">
 <div class="listing">
   <h3><a href="{% url 'listing' list.id %}"> {{ list.title }} </a></h3>
   {% if list.imageLink %}
-  <img src="{{ list.imageLink }}" /><br>
+    <img class="img-thumbnail" src="{{ list.imageLink }}" /><br>
   {% else %}
-  <img src="{% static "auctions/Image_not_available.png" %}" /><br>
+  <div class="not-found">
+    <img src="{% static "auctions/Image_not_available.png" %}" /><br>
+  </div>
   {% endif %}
   <p>{{ list.description }}</p>
   <strong><label for="price">Price: </label></strong>
   <span name="price"> {{ list.price.offer_amount}} </span>
   <p>{{ list.created_at }}</p>
 </div>
-<hr />
+<hr>
+</div>
 {% endfor %} 
 {% endblock %}

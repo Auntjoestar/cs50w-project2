@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block body %}
+<div class="content">
 <h2>Watchlist</h2>
 {% if not listing %}
 <p>Your watchlist is empty</p> 
@@ -10,10 +11,11 @@
 <div class="listing">
   <h3><a href="{% url 'listing' list.id %}"> {{ list.title }} </a></h3>
   {% if list.imageLink %}
-  <img src="{{ list.imageLink }}" /><br>
+  <img class="img-thumbnail" src="{{ list.imageLink }}" /><br>
   {% else %}
   <img src="{% static "auctions/Image_not_available.png" %}" /><br>
   {% endif %}
+  <p>{{ list.description }}</p>
   <strong><label for="price">Price: </label></strong>
   <span name="price"> {{ list.price.offer_amount}} </span>
   <p>{{ list.created_at }}</p>
@@ -21,10 +23,11 @@
     {% csrf_token %}
     <div id="watchlist">
         <input type="hidden" name="id" value="{{ list.id }}">
-        <input name="remove" type="submit" value="remove"><br>
+        <input name="remove" type="submit" value="remove" class="submit-list"><br>
     </div>
     </form>
 </div>
-<hr />
+<hr>
+</div>
 {% endfor %} 
 {% endblock %}

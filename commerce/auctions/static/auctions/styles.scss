@@ -1,0 +1,217 @@
+$bg-color: #9B3922;
+$font-color: #FEFBF6;
+$not-found: #ffffff;
+$border: #481E14;
+$danger-button: #F2613F;
+$warning: yellow;
+
+@mixin button {
+    border-radius: 4px;
+    background-color: $border;
+    color: $font-color;
+    width: vw;
+    height: 6vh;
+    white-space: normal;
+}
+
+@media (min-width: 768px) {
+    body {
+        background-color:  $bg-color !important;
+        color: $font-color !important; 
+        font-size: 1em !important;
+        a {
+            text-decoration: none;
+            color: $font-color;
+        }
+        a:hover {
+            color: grey;
+            text-decoration: none;
+        }
+        img {
+            width: 50%;
+            border: 1px solid $border;
+            margin-bottom: 1%;
+        }
+        textarea {
+            width: 90vw;
+        }
+    }
+    .submit {
+        @include button;
+        margin-left: 23.2vw;
+    }
+    .submit-list {
+        @include button;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    .submit-close {
+        @include button;
+        margin-top: 1%;
+        margin-bottom: 1%;
+        color: $warning;
+        background-color: $danger-button;
+    }
+    .watchlisted {
+        width: 12vw;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    .content {
+        margin: 1%;
+    }
+    .not-found {
+        width: 50%;
+        height: fit-content;
+        img {
+            width: 100%;
+            background-color: $not-found;
+        }
+    }
+    .navbar-brand {
+        width: 5%;
+        margin-right: 10%;
+        img {
+            border: none;
+            width: 100%;
+        }
+    }
+    .img-thumbnail {
+        border-color: $border !important;
+        background-color: $border !important;
+    }
+    .form {
+        display: flex;
+        justify-content: space-between;
+        width: 30vw;
+        input {
+            width: 60.5%;
+        }
+        select {
+            width: 60.5%;
+        }
+        margin-bottom: 1%;
+    }
+    .warning {
+        color: $warning;
+    }
+    .commented {
+        border: 1px solid white !important;
+        margin-bottom: 1%;
+        padding: 1%;
+    }
+    .nav-item {
+        margin-left: 5px;
+    }
+    .username {
+        text-align: end;
+    }
+    #no-comment {
+        text-align: center;
+    }
+    #watchlistcount {
+        background-color: gray;
+        display: inline;
+        border-radius: 4px;
+        padding: 2px;
+    }
+}
+
+@media (max-width: 767px) {
+    body {
+        background-color:  $bg-color !important;
+        color: $font-color !important; 
+        font-size: 1em !important;
+        height: 100vh;
+        width: 100vw;
+        a {
+            text-decoration: none;
+            color: $font-color;
+        }
+        img {
+            width: 100%;
+            border: 1px solid $border;
+            margin-bottom: 1%;
+        }
+    }
+    .submit {
+        @include button;
+        margin-left: 78%;
+    }
+    .submit-list {
+        @include button;
+        width: 20%;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    .submit-close {
+        @include button;
+        margin-top: 1%;
+        margin-bottom: 1%;
+        color: $warning;
+        background-color: $danger-button;
+    }
+    .watchlisted {
+        width: 30%;
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+    .content {
+        margin: 1%;
+    }
+    .not-found {
+        width: 100%;
+        height: fit-content;
+        img {
+            width: 100%;
+            background-color: $not-found;
+        }
+    }
+    .navbar-brand {
+        width: 15%;
+        margin-right: 10%;
+        img {
+            border: none;
+            width: 100%;
+        }
+    }
+    .img-thumbnail {
+        border-color: $border !important;
+        background-color: $border !important;
+    }
+    .form {
+        display: flex;
+        justify-content: space-between;
+        width: 95vw;
+        input {
+            width: 60.5%;
+        }
+        select {
+            width: 60.5%;
+        }
+        margin-bottom: 1%;
+    }
+    .warning {
+        color: $warning;
+    }
+    .commented {
+        border: 1px solid white !important;
+        margin-bottom: 1%;
+        padding: 1%;
+    }
+    .nav-item {
+        margin-left: 5px;
+    }
+    .username {
+        text-align: end;
+    }
+    #no-comment {
+        text-align: center;
+    }
+    #watchlistcount {
+        background-color: gray;
+        display: inline;
+        border-radius: 4px;
+        padding: 2px;
+    }
+}

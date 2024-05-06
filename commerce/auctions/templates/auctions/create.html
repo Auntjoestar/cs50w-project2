@@ -2,29 +2,35 @@
 
 {% block body %}
 {% if message %}
-    <div class="alert alert-danger"> 
+<div class="content">
+    <div class="alert alert-danger alert-dismissible"> 
         {{ message }}
+      <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
     </div>
+</div>
 {% endif %}
+<div class="content">
+<h2>Create listing</h2>
+<hr>
 <form action="{% url 'create' %}" method="POST">
 {% csrf_token %}
 <div class="forms">
    <div class="form">
       <strong><label for="title">Title: </label></strong>
-      <input type="text" name="title"><br>
+      <input type="text" name="title">
    </div>
    <div class="form">
       <strong><label for="description">Description: </label></strong>
-      <input type="text" name="description"><br>
+      <input type="text" name="description">
    </div>
    <div class="form">
       <strong><label for="img">Image Link: </label></strong>
-      <input type="text" name="img"><br>
+      <input type="text" name="img">
    </div>
    <div class="form">
       <strong><label for="category">Category: </label></strong>
       <select name="category">
-         <option value=""> -- select a category (optional) -- </option>
+         <option value="">No category</option>
          {% for choice in choices %}
          <option>{{ choice }}</option>
          {% endfor %}
@@ -32,10 +38,10 @@
    </div>
    <div class="form">
       <strong><label for="price">Price: </label></strong>
-      <input type="text" name="price"><br>
+      <input type="text" name="price">
    </div>
-   
-   <input type="submit" value="Upload">
+   <input class="submit" type="submit" value="Upload">
+</div>
 </div>
 </form>
 {% endblock %}
