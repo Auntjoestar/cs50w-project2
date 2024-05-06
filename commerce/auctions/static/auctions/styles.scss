@@ -9,7 +9,6 @@ $warning: yellow;
     border-radius: 4px;
     background-color: $border;
     color: $font-color;
-    width: vw;
     height: 6vh;
     white-space: normal;
 }
@@ -39,6 +38,7 @@ $warning: yellow;
     .submit {
         @include button;
         margin-left: 23.2vw;
+        width: 7vw;
     }
     .submit-list {
         @include button;

@@ -20,16 +20,15 @@
     border-radius: 4px;
     background-color: #481E14;
     color: #FEFBF6;
-    width: vw;
     height: 6vh;
     white-space: normal;
-    margin-left: 23.2vw; }
+    margin-left: 23.2vw;
+    width: 7vw; }
 
   .submit-list {
     border-radius: 4px;
     background-color: #481E14;
     color: #FEFBF6;
-    width: vw;
     height: 6vh;
     white-space: normal;
     margin-top: 1%;
@@ -39,7 +38,6 @@
     border-radius: 4px;
     background-color: #481E14;
     color: #FEFBF6;
-    width: vw;
     height: 6vh;
     white-space: normal;
     margin-top: 1%;
@@ -124,7 +122,6 @@
     border-radius: 4px;
     background-color: #481E14;
     color: #FEFBF6;
-    width: vw;
     height: 6vh;
     white-space: normal;
     margin-left: 78%; }
@@ -133,7 +130,6 @@
     border-radius: 4px;
     background-color: #481E14;
     color: #FEFBF6;
-    width: vw;
     height: 6vh;
     white-space: normal;
     width: 20%;
@@ -144,7 +140,6 @@
     border-radius: 4px;
     background-color: #481E14;
     color: #FEFBF6;
-    width: vw;
     height: 6vh;
     white-space: normal;
     margin-top: 1%;
