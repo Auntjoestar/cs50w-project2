@@ -117,6 +117,8 @@
       width: 100%;
       border: 1px solid #481E14;
       margin-bottom: 1%; }
+    body textarea {
+      width: 90vw; }
 
   .submit {
     border-radius: 4px;
@@ -189,7 +191,8 @@
   .commented {
     border: 1px solid white !important;
     margin-bottom: 1%;
-    padding: 1%; }
+    padding: 1%;
+    width: 90vw; }
 
   .nav-item {
     margin-left: 5px; }

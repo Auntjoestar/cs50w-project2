@@ -133,6 +133,9 @@ $warning: yellow;
             border: 1px solid $border;
             margin-bottom: 1%;
         }
+        textarea {
+            width: 90vw;
+        }
     }
     .submit {
         @include button;
@@ -198,6 +201,7 @@ $warning: yellow;
         border: 1px solid white !important;
         margin-bottom: 1%;
         padding: 1%;
+        width: 90vw;
     }
     .nav-item {
         margin-left: 5px;
