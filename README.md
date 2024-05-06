@@ -4,7 +4,7 @@ Se ha hecho una aplicación web de subastas con temática del juego Dungeons and
 ## Tecnologías utilizadas
 Para el proyecto se ha hecho de uso de django, modelos de django, sqlite3, sass y boostrap.
 ## ¿Por qué no he hecho uso de django forms?
-Como Django es una tecnología todavía nueva para mí, se me hizo fácil entender como hacer con los campos de foreign keys con los formularios de django, por lo cual preferí hacer mis propios formularios desde cer.
+Como Django es una tecnología todavía nueva para mí, se me hizo fácil entender como hacer con los campos de foreign keys con los formularios de django, por lo cual preferí hacer mis propios formularios desde cero.
 ## Modelos
 He hecho uso de 5 modelos:
 ### User
@@ -19,3 +19,5 @@ Lleva registro de todos los comentarios realizados en las distintas listas
 Lleva un registro de los ganadores de las distintas listas.
 ## Categories
 Al usuario se le solicita elegir una categoría, sin embargo el valor predeterminado del selector es "No category" que devuelve un string falsy, lo que se toma como None en views, por lo cual la categoría resulta opcional.
+## Usuario no registrado
+El usuario no registrado puede visualizar las listas y las categorías, sin embargo si intenta interactuar con la watchlist o subir una oferta será redirigido a login. Por otro lado, no se le mostrará la opción de hacer un comentario, solo se le mostraran los ya hechos por otros usuarios; ya que, me pareció algo cruel dejarle crear un comentario completo y que no lo pueda subir por no estar loggeado.
