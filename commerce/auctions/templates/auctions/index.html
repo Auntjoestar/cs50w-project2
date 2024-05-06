@@ -1,0 +1,25 @@
+{% extends "auctions/layout.html" %} 
+{% load static %}
+
+{% block body %}
+<h2>Active Listings</h2>
+<hr>
+{% if not listing %}
+<p>It seems that there are currently none </p>
+{% endif %}
+{% for list in listing %}
+<div class="listing">
+  <h3><a href="{% url 'listing' list.id %}"> {{ list.title }} </a></h3>
+  {% if list.imageLink %}
+  <img src="{{ list.imageLink }}" /><br>
+  {% else %}
+  <img src="{% static "auctions/Image_not_available.png" %}" /><br>
+  {% endif %}
+  <p>{{ list.description }}</p>
+  <strong><label for="price">Price: </label></strong>
+  <span name="price"> {{ list.price.offer_amount}} </span>
+  <p>{{ list.created_at }}</p>
+</div>
+<hr />
+{% endfor %} 
+{% endblock %}

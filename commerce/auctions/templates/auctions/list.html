@@ -1,0 +1,113 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block body %}
+{% if message %}
+    {% if update %}
+    <div class="alert alert-success"> 
+        {{ message }}
+    </div>
+    {% else %}
+    <div class="alert alert-danger"> 
+        {{ message }}
+    </div>
+    {% endif %}
+{% endif %}
+{% if winner  %}
+    {%  if isWinner %}
+    <div class="alert alert-danger"><strong>Current listing is closed, you're the winner.</strong></div>
+    {% else %}
+    <div class="alert alert-danger"><strong>Current listing is closed, the winner is {{ winner.winned_by }}.</strong></div>
+    {% endif %}
+{% endif %}
+<h1> {{ listing.title }} </h1>
+{% if user.is_authenticated %}
+{% if isInWatchList  %}
+<form action="{% url "removeWatchlist" id=listing.id %}" method="POST">
+    {% csrf_token %}
+<div id="watchlist">
+    <input name="remove" type="submit" value="watchlisted"><br>
+</div>
+</form>
+{% else %}
+{% if listing.active %}
+<form action="{% url "addWatchlist" id=listing.id %}" method="POST">
+    {% csrf_token %}
+<div id="watchlist">
+    <input name="add" type="submit" value="watchlist"><br>
+</div>
+</form>
+{% endif %}
+{% endif %}
+{% else %}
+<a href="{% url "login" %}">
+    <input type="submit" value="watchlist"><br>
+</a>
+{% endif %}
+{% if listing.lister.id == user.id %} 
+{% if listing.active %}
+<form action="{% url "close_auction" id=listing.id %}" method="POST">
+    {% csrf_token %}
+    <input name="closed" type="submit" value="close"><br>
+</form>
+{% endif %}
+{% endif %}
+{% if listing.imageLink %}
+<img src="{{ listing.imageLink }}" alt="list image">
+{% else %}
+<img src="{% static "auctions/Image_not_available.png" %}" alt="list image">
+{% endif %}
+<p> {{ listing.description }} </p>
+<h2> {{ listing.price.offer_amount }} gp</h2>
+{% if listing.active %}
+{% if user.is_authenticated %}
+{% if listing.lister.id == user.id %}
+<div class="isOwner">
+    <h4>You're the owner of this listing</h4>
+</div>
+{% elif listing.price.offerer_id == user.id%}
+<div class="isWinning">
+    <h4>You currently have the highest bid</h4>
+</div>
+{% else %}
+<form action="{% url "create_offer" id=listing.id%}" method="POST">
+    {% csrf_token %}
+    <input type="number" placeholder="Offer" name="bid"> <br>
+    <input type="submit" value="Offer">
+    </form>
+    <hr>
+{% endif %}
+{% else %}
+<input type="number" placeholder="Offer" name="bid"> <br>
+<a href="{% url "login" %}">
+<input type="submit" value="Offer">
+</a>
+{% endif %}
+{% endif %}
+<h2>Details</h2>
+<label for="lister"><strong>Listed by: </strong></label>
+<span name="lister">{{ listing.lister }}</span> <br>
+{% if listing.categories %}
+<label for="category"><strong>Category: </strong></label>
+<span name="category">{{ listing.categories }}</span>
+<hr>
+{% endif %}
+<hr>
+<h2>Comments</h2>
+{% if listing.active %}
+{% if user.is_authenticated %}
+<label for="comment">Make a comment: </label> <br>
+<form action="{% url "make_comment" id=listing.id%}" method="POST">
+    {% csrf_token %}
+<textarea name="comment" type="text" maxlength="500" rows="6" cols="100" placeholder="Write your comment here"></textarea> <br>
+<button type="submit">Upload</button>
+</form>
+{% endif %}
+{% endif %}
+{% for comment in comments %}
+<div class="comment"> 
+    <h3>{{ comment.user.username }}</h3>
+    <p>{{ comment.comment}}</p>
+</div>
+{% endfor %}
+{% endblock %}

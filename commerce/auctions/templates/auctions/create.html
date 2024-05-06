@@ -1,0 +1,41 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+{% if message %}
+    <div class="alert alert-danger"> 
+        {{ message }}
+    </div>
+{% endif %}
+<form action="{% url 'create' %}" method="POST">
+{% csrf_token %}
+<div class="forms">
+   <div class="form">
+      <strong><label for="title">Title: </label></strong>
+      <input type="text" name="title"><br>
+   </div>
+   <div class="form">
+      <strong><label for="description">Description: </label></strong>
+      <input type="text" name="description"><br>
+   </div>
+   <div class="form">
+      <strong><label for="img">Image Link: </label></strong>
+      <input type="text" name="img"><br>
+   </div>
+   <div class="form">
+      <strong><label for="category">Category: </label></strong>
+      <select name="category">
+         <option value=""> -- select a category (optional) -- </option>
+         {% for choice in choices %}
+         <option>{{ choice }}</option>
+         {% endfor %}
+      </select>
+   </div>
+   <div class="form">
+      <strong><label for="price">Price: </label></strong>
+      <input type="text" name="price"><br>
+   </div>
+   
+   <input type="submit" value="Upload">
+</div>
+</form>
+{% endblock %}
