@@ -12,7 +12,7 @@ class Offers(models.Model):
     offered_at = models.DateTimeField(default=datetime.now, verbose_name="Offer created at")
     
     def __str__(self):
-         return f'Offer of {self.offer_amount} for "{self.title.title}" by {self.offerer.username}'
+         return f'Offer of {self.offer_amount} by {self.offerer.username}'
 
 class Listing(models.Model):
     lister = models.ForeignKey(User, related_name="lister", on_delete=models.CASCADE, verbose_name="Listed By")
@@ -56,3 +56,6 @@ class Winners(models.Model):
     item = models.ForeignKey(Listing, verbose_name="Product Winned", related_name="product_winned", on_delete=models.CASCADE)
     winned_by = models.ForeignKey(User, verbose_name="Winned by", related_name="winned_by", on_delete=models.CASCADE)
     timestamp = models.DateField(default=datetime.now, verbose_name="Product winned at")
+    
+    def __str__(self):
+        return f'{self.item.title} winned by {self.winned_by.username}'
